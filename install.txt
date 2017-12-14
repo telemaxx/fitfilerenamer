@@ -1,0 +1,13 @@
+download zip from:
+https://github.com/dtcooper/python-fitparse
+
+unzip zip file
+
+change to that directory:
+
+C:\>cd C:\Users\top\Downloads\python-fitparse-master
+
+then install fitparse:
+
+C:\>c:\PyPy2\pypy.exe  C:\Users\top\Downloads\python-fitparse-master\setup.py install
+
