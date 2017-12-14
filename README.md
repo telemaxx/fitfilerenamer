@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-fitfilerenamer
-===============
-=======
 # fitfilerenamer
 
->>>>>>> 30c00e2e32aba52434f744036259e29e9934f33f
 lezyne fit file rename tool
 the LEZYNE SUPER GPS creates fit files with creazy names like:
 bcfe453.fit
