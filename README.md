@@ -1,4 +1,4 @@
-# fitfilerenamer
+fitfilerenamer
 ===============
 lezyne fit file rename tool
 the LEZYNE SUPER GPS creates fit files with creazy names like:
