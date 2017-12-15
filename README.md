@@ -1,7 +1,7 @@
 # fitfilerenamer
 
 ### LEZYNE GPS Devices
-creating fit files with unfiendly names like:
+creating fit files with unfriendly names like:
 ```
 bcfe453.fit
 ```
