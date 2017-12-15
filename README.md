@@ -1,4 +1,4 @@
-# fitfilerenamer
+# fitfilerenamer.py
 
 ### LEZYNE GPS Devices
 creating fit files with unfriendly names like:
