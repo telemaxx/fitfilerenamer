@@ -209,7 +209,3 @@ if __name__=='__main__':
     main()
 
 
-allowed_fields = ['timestamp','position_lat','position_long', 'distance',
-'enhanced_altitude', 'altitude','enhanced_speed',
-                 'speed', 'heart_rate','cadence','fractional_cadence',
-                 'temperature']
