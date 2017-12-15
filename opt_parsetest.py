@@ -48,7 +48,6 @@ def main():
     input("Press Enter to quit...")	
 
 
-
 def create_filelist(dir):
     fit_files = glob.glob(os.path.join(dir,'*.[fF][iI][tT]'))
     #fit_files = [dir + file for file in files if file[-4:].lower()=='.fit']
