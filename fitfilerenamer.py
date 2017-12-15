@@ -44,7 +44,7 @@ DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
 
 def main():
-    parser = optparse.OptionParser()
+    parser = optparse.OptionParser(usage="usage: %prog filename1.fit filename2.fit or %prog dirname or %prog [option]",version='%prog  {version}'.format(version=__version__))
     (optionen, args) = parser.parse_args()
     if len(args) == 1:
         Dprint(u"Looking for File or Directory: %s" % args[0])
