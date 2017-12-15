@@ -25,6 +25,11 @@ description somewhere below
 ```
 ## HOWTO USE
 * doubleclick the shortcut, the script looking for fit files in the defaultdirectory, defined in the python file
+```python
+# Directory where the FIT Files are located
+HOME = os.path.expanduser('~')
+FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
+```
 * drag and drop fit files to the shortcut. this files are renamed
 * drag and drop ONE folder to the shortcut. all fitfiles in the first level of that folder are renamed
 
