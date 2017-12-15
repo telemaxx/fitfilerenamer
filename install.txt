@@ -10,4 +10,3 @@ C:\>cd C:\Users\top\Downloads\python-fitparse-master
 then install fitparse:
 
 C:\>c:\PyPy2\pypy.exe  C:\Users\top\Downloads\python-fitparse-master\setup.py install
-
