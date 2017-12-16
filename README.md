@@ -52,6 +52,7 @@ $ C:\yourepythonprogrammfolder\pip install python-fitparse
 ```
 you should try that first
 ## TIP
-instead of using the standart python, use [pypy](https://pypy.org)   
-On Windows, there is only the python2 compliant 32bit version. but that version is ok.   
-With pypy the script runs about 5 times faster.
+instead of using the standard python, use [pypy](https://pypy.org)   
+With pypy the script runs about 5 times faster.   
+On Windows, there is only the python2 compliant 32bit version. but that version is ok. 
+
