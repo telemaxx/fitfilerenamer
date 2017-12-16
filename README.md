@@ -2,10 +2,10 @@
 
 ### LEZYNE GPS Devices
 creating fit files with unfriendly names like:
-`bcfe453.fit`
-This tool automaticily rename such files in:
-`2017-12-10_15-30-36_lezyne_576hm_4.fit`
-this syntax:
+`bcfe453.fit`   
+This tool automaticily rename such files in:   
+`2017-12-10_15-30-36_lezyne_576hm_4.fit`   
+this syntax:   
 `YYYY-MM-DD_hh-mm-ss_device_altitudegain_count.fit`
 
 ### HOWTO INSTALL
