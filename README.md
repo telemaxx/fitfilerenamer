@@ -46,12 +46,12 @@ for pypy:
 $ cd youredownloadfolder\python-fitparse
 $ C:\yourepypyprogrammfolder\pypy.exe setup.py install
 ```
-The \"normal\" easyer way would be:
+The \"normal\" easyier way would be:
 ```sh
 $ C:\yourepythonprogrammfolder\pip install python-fitparse
 ```
 you should try that first
 ## TIP
-instead of using the standart python, use [pypy](https://pypy.org)
-On Windows, there is only the python2 compliant 32bit version. but that version is ok.
+instead of using the standart python, use [pypy](https://pypy.org)   
+On Windows, there is only the python2 compliant 32bit version. but that version is ok.   
 With pypy the script runs about 5 times faster.
