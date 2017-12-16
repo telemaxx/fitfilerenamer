@@ -80,7 +80,7 @@ def main():
             final_message('wait %d sec or press strg c' % (WAIT_AFTER_JOB_DONE))
             sys.exit(6)
     Dprint('fitfiles: %s' % (filelist))
-
+    Iprint('please be patient, i am parsing. This can take a minute')
     file_count = 0
     for file in filelist:
         Dprint('processing %s' % (file))

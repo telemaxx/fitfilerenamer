@@ -41,5 +41,7 @@ for m in messages:
                 #print('timename and timestamp %s %s' % (f.name,f.value))
                 dummy=1
                 #return f.value
+        if f.name == 'name':
+            print('name %s' % (f.value))
 #print (messages)
-print (enh_alt_max)
+#print (enh_alt_max)
