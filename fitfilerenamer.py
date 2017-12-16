@@ -36,6 +36,7 @@ from fitparse import FitFile, FitParseError
 VERBOSITY = 1
 
 # Directory where the FIT Files are located
+# HOME stands for youre homedirectory e.g /home/pi 
 HOME = os.path.expanduser('~')
 FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
 #FIT_DEFAULT_PATH = 'C:\\Users\\top\\BTSync\\SA5\\Documents\\LezyneGpsAlly\\6745th\\'
