@@ -17,8 +17,8 @@ description some where below
   * create a shortcut on the Desktop. Target:
   `C:\yourepythonprogrammfolder\python.exe C:\thefolderwhereyousavethefile\fitfilerenamer.py`
 ## HOWTO USE
-##### There are three different Way to use this tool:
-1. doubleclick the shortcut, the script looking for fit files in the defaultdirectory, defined in the python file
+##### There are three different ways to use this tool:
+1. doubleclick the shortcut, the script looking for fit files in the defaultdirectory, defined inside the python file
 ```python
 # Directory where the FIT Files are located
 # HOME stands for youre homedirectory e.g /home/pi 
@@ -26,8 +26,9 @@ HOME = os.path.expanduser('~')
 FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
 ```
 
-2. drag and drop fit files to the shortcut. this files are renamed
+2. drag and drop one or more fit files to the shortcut. this files are renamed
 3. drag and drop ONE folder to the shortcut. all fitfiles in the first level of that folder are renamed
+Note: This tool using the fitparse modul, powerfull but slow. So please be patient.
 ##### The options:
 * getting help: `C:\thefolderwhereyousavethefile\fitfilerenamer.py -h`
 * getting version `C:\thefolderwhereyousavethefile\fitfilerenamer.py --version`
