@@ -28,6 +28,7 @@ FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly',
 
 2. drag and drop one or more fit files to the shortcut. this files are renamed
 3. drag and drop ONE folder to the shortcut. all fitfiles in the first level of that folder are renamed
+
 Note: This tool using the fitparse modul, powerfull but slow. So please be patient.
 ##### The options:
 * getting help: `C:\thefolderwhereyousavethefile\fitfilerenamer.py -h`
