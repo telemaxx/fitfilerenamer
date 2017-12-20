@@ -1,16 +1,15 @@
 # fitfilerenamer.py
 
-### LEZYNE GPS Devices
+### LEZYNE GPS Devices...
 ...creating fit files with unfriendly names like:
 `bcfe453.fit`   
-This tool automaticily rename such files in:   
+This tool looks into the fit file and automatically rename such files in:   
 `2017-12-10_15-30-36_lezyne_576hm_4.fit`   
 this syntax:   
 `YYYY-MM-DD_hh-mm-ss_device_altitudegain_count.fit`
 
 ### HOWTO INSTALL
   * 1st install python 2.7 or python 3 or pypy
-
   * Install fitparse modul
     [Available here](http://dtcooper.github.com/python-fitparse/)
 description some where below
@@ -18,7 +17,8 @@ description some where below
   * create a shortcut on the Desktop. Target:
   `C:\yourepythonprogrammfolder\python.exe C:\thefolderwhereyousavethefile\fitfilerenamer.py`
 ## HOWTO USE
-* doubleclick the shortcut, the script looking for fit files in the defaultdirectory, defined in the python file
+##### There are three different Way to use this tool:
+1. doubleclick the shortcut, the script looking for fit files in the defaultdirectory, defined in the python file
 ```python
 # Directory where the FIT Files are located
 # HOME stands for youre homedirectory e.g /home/pi 
@@ -26,8 +26,9 @@ HOME = os.path.expanduser('~')
 FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
 ```
 
-* drag and drop fit files to the shortcut. this files are renamed
-* drag and drop ONE folder to the shortcut. all fitfiles in the first level of that folder are renamed
+2. drag and drop fit files to the shortcut. this files are renamed
+3. drag and drop ONE folder to the shortcut. all fitfiles in the first level of that folder are renamed
+##### The options:
 * getting help: `C:\thefolderwhereyousavethefile\fitfilerenamer.py -h`
 * getting version `C:\thefolderwhereyousavethefile\fitfilerenamer.py --version`
 
