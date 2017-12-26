@@ -17,15 +17,16 @@ release infos:
 0.62: using totalascent instead of enhanced altitude to get correct altitude gain
 0.63: mods to make the code comptible to python 2.7 AND 3
 0.64: removing hard coded windows default path and using hopefully os independent path
+0.70: switching from optparse to argparse. adding some options: -s (simulationmode -i (ignore wrong crc) -v (verbosity 0-2)
 """
 
-__version__ = '0.64'
+__version__ = '0.70'
 __author__ = 'telemaxx'
 
 import os
 import sys
-import optparse
-#import fitparse  # neccercary?
+#import optparse
+import argparse
 import datetime
 import time
 import glob
@@ -33,7 +34,6 @@ from fitparse import FitFile, FitParseError
 
 
 # DEBUG 0=silent, 1=some infos, 2=many output
-VERBOSITY = 1
 
 # Directory where the FIT Files are located
 # HOME stands for youre homedirectory e.g /home/pi 
@@ -45,8 +45,20 @@ DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
 
 def main():
-    parser = optparse.OptionParser(usage="usage: %prog filename1.fit filename2.fit or %prog dirname or %prog [option]",version='%prog  {version}'.format(version=__version__))
-    (optionen, args) = parser.parse_args()
+    starttime = time.time()
+    global verbosity, simulation
+#    parser = optparse.OptionParser(usage="usage: %prog filename1.fit filename2.fit or %prog dirname or %prog [option]",version='%prog  {version}'.format(version=__version__))
+    parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
+    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=1, help='0= silent, 1= a bit output, 2= many output')
+    parser.add_argument('fit_files_or_folder', nargs="*", help='a.fit b.fit etc or ONE folder')
+    parser.add_argument('-s', '--simulation', action = 'store_true', help='simulation without renaming any file')
+    parser.add_argument('-i', '--ignorecrc', action = 'store_false', help='no crc check')
+    arguments = vars(parser.parse_args())
+    args = arguments['fit_files_or_folder']
+    verbosity = arguments['verbosity']
+    ignorecrc = arguments['ignorecrc']
+    simulation = arguments['simulation']
+    #    (optionen, args) = parser.parse_args()
     if len(args) == 1:
         Dprint(u"Looking for File or Directory: %s" % args[0])
         if args[0][-4:].lower()=='.fit' and os.path.isfile(args[0]): # if the one argument is a file, create a list with one entry
@@ -89,7 +101,7 @@ def main():
             Iprint('skipping folder: %s' % (file))
             continue
         try:
-            fitfile = FitFile(file)
+            fitfile = FitFile(file, check_crc = ignorecrc)
             Dprint('parsing start')
             fitfile.parse()
             Dprint('parsing done')
@@ -101,17 +113,18 @@ def main():
         #Dprint('rename arguments: %s , %s , %d' % (fitfile, file, file_count))
         rename_fitfile(fitfile, file, file_count)
         file_count += 1
-    Iprint('finished processing %d file(s)' % (file_count))
+    difftime = time.time() - starttime
+    Iprint('finished processing %d file(s) in %d seconds' % (file_count, difftime))
     final_message('wait %d sec or press strg c' % (WAIT_AFTER_JOB_DONE))
 
 
 
 def Dprint(text2print):
-    if VERBOSITY == 2:
+    if verbosity == 2:
         print(text2print)
 
 def Iprint(text2print):
-    if VERBOSITY != 0:
+    if verbosity != 0:
         print(text2print)
 
 def get_timestamp(messages):
@@ -167,7 +180,7 @@ def create_filelist(dir):
 
 def final_message(msg):
     Iprint(msg)
-    if VERBOSITY > 0:
+    if verbosity > 0:
         try:
             time.sleep(WAIT_AFTER_JOB_DONE)
         except KeyboardInterrupt:
@@ -175,6 +188,7 @@ def final_message(msg):
 
 #(fitfile, file, file_count)
 def rename_fitfile(fitfile, original_filename=None, counter=0):
+    global simulation
     Dprint('fitfile.messages')
     messages = fitfile.messages
     Dprint('search timestamp')
@@ -201,7 +215,10 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
     if not os.path.isfile(os.path.join(fitpath4renaming , output_file)):
         #if os.path.isfile(original_filename):
         Dprint("renaming orig, FITPATH+'\\'+outputfile %s %s" % (original_filename,os.path.join(fitpath4renaming,output_file)))
-        os.rename(original_filename, os.path.join(fitpath4renaming,output_file))
+        if not simulation:
+            os.rename(original_filename, os.path.join(fitpath4renaming,output_file))
+        else:
+            Iprint('in simulation mode, skipping renaming')
     else:
         Iprint("skipping existing File: %s" % (output_file))
     Dprint ('-------------------')

@@ -31,8 +31,10 @@ FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly',
 
 Note: This tool using the fitparse modul, powerfull but slow. So please be patient.
 ##### The options:
-* getting help: `C:\thefolderwhereyousavethefile\fitfilerenamer.py -h`
-* getting version `C:\thefolderwhereyousavethefile\fitfilerenamer.py --version`
+* getting help and display version: `C:\thefolderwhereyousavethefile\fitfilerenamer.py -h`
+* setting verbosity `C:\thefolderwhereyousavethefile\fitfilerenamer.py -v[0-2]`
+* ignoring wrong crc `C:\thefolderwhereyousavethefile\fitfilerenamer.py -i
+* simulation mode, do all except renaming `C:\thefolderwhereyousavethefile\fitfilerenamer.py -s
 
 ## HOWTO install fitparse
 the description on the project webpage did not worked for me so i do it this way:
@@ -56,6 +58,7 @@ $ C:\yourepythonprogrammfolder\pip install python-fitparse
 you should try that first
 ## TIP
 instead of using the standard python, use [pypy](https://pypy.org)   
-With pypy the script runs about 5 times faster.   
+With pypy the script runs about 5 times faster.
+startup time is longer, but after that is faster.
 On Windows, there is only the python2 compliant 32bit version. but that version is ok. 
 
