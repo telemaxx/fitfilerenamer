@@ -32,21 +32,33 @@ import time
 import glob
 from fitparse import FitFile, FitParseError
 
+#try to detect android
+ROA = True
+try: #check if android and import gui tools
+    import androidhelper.sl4a as sl4a
+except: #otherwise its not android
+    ROA = None
 
 # DEBUG 0=silent, 1=some infos, 2=many output
 
 # Directory where the FIT Files are located
-# HOME stands for youre homedirectory e.g /home/pi 
-HOME = os.path.expanduser('~')
-FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
-#FIT_DEFAULT_PATH = 'C:\\Users\\top\\BTSync\\SA5\\Documents\\LezyneGpsAlly\\6745th\\'
+if not ROA: # not android
+    # HOME stands for youre homedirectory e.g /home/pi 
+    HOME = os.path.expanduser('~')
+    FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
+    #FIT_DEFAULT_PATH = 'C:\\Users\\top\\BTSync\\SA5\\Documents\\LezyneGpsAlly\\6745th\\'
+else: # android.-> os.path.join seems not to work on my samsung, so manuell:
+    #FIT_DEFAULT_PATH = '/sdcard/Documents/LezyneGpsAlly/6745th'
+    FIT_DEFAULT_PATH = os.path.abspath(os.path.join(os.sep,'sdcard','Documents','LezyneGpsAlly','6745th'))
+
 DEFAULT_MANUFACTURER = 'Samsung-A5-2017' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
 
 def main():
-    starttime = time.time()
     global verbosity, simulation
+    starttime = time.time()
+
 #    parser = optparse.OptionParser(usage="usage: %prog filename1.fit filename2.fit or %prog dirname or %prog [option]",version='%prog  {version}'.format(version=__version__))
     parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
     parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=1, help='0= silent, 1= a bit output, 2= many output')
@@ -59,6 +71,14 @@ def main():
     ignorecrc = arguments['ignorecrc']
     simulation = arguments['simulation']
     #    (optionen, args) = parser.parse_args()
+
+    if ROA:
+        Dprint('Android (qpython) detectet')
+        droid = sl4a.Android()
+    else:
+        Dprint('Android not detectet')
+
+
     if len(args) == 1:
         Dprint(u"Looking for File or Directory: %s" % args[0])
         if args[0][-4:].lower()=='.fit' and os.path.isfile(args[0]): # if the one argument is a file, create a list with one entry
@@ -92,6 +112,17 @@ def main():
             final_message('wait %d sec or press strg c' % (WAIT_AFTER_JOB_DONE))
             sys.exit(6)
     Dprint('fitfiles: %s' % (filelist))
+
+    n = len(filelist)
+    if ROA:
+        # create progressbar for download
+        droid.dialogCreateHorizontalProgress(
+        'Analyzing and Renaming',
+        'please be pation',
+        n)
+        droid.dialogShow()
+        Dprint('creating progressbar')
+
     Iprint('please be patient, i am parsing. This can take a minute')
     file_count = 0
     for file in filelist:
@@ -112,12 +143,23 @@ def main():
             continue
         #Dprint('rename arguments: %s , %s , %d' % (fitfile, file, file_count))
         rename_fitfile(fitfile, file, file_count)
+        if ROA:
+            droid.dialogSetCurrentProgress(file_count + 1)
         file_count += 1
     difftime = time.time() - starttime
     Iprint('finished processing %d file(s) in %d seconds' % (file_count, difftime))
-    final_message('wait %d sec or press strg c' % (WAIT_AFTER_JOB_DONE))
-
-
+    if ROA:
+        droid.dialogDismiss()
+        title='I have renamed %d File(s) in %d seconds' % (file_count, difftime)
+        #droid.makeToast(title)
+        #droid.ttsSpeak(title)
+        summary = 'Default Filelocation: %s' % (FIT_DEFAULT_PATH)
+        droid.dialogCreateAlert(title, summary)
+        droid.dialogSetPositiveButtonText('OK')
+        droid.dialogShow()
+        dummy = droid.dialogGetResponse().result
+    else:
+        final_message('wait %d sec or press strg c' % (WAIT_AFTER_JOB_DONE))
 
 def Dprint(text2print):
     if verbosity == 2:
