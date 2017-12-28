@@ -118,7 +118,7 @@ def main():
         # create progressbar for download
         droid.dialogCreateHorizontalProgress(
         'Analyzing and Renaming',
-        'please be pation',
+        'please be patient',
         n)
         droid.dialogShow()
         Dprint('creating progressbar')
