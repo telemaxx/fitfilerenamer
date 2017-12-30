@@ -51,7 +51,7 @@ for pypy:
 $ cd youredownloadfolder\python-fitparse
 $ C:\yourepypyprogrammfolder\pypy.exe setup.py install
 ```
-for qpython:
+for qpython:  
 from the unzipped folder copy the whole folder to:
 ```
 /internal_sdcard/qpython/lib/python2.7/site-packages
