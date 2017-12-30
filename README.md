@@ -46,12 +46,12 @@ the description on the project webpage did not worked for me so i do it this way
 $ cd youredownloadfolder\python-fitparse
 $ C:\yourepythonprogrammfolder\python.exe setup.py install
 ```
-for pypy:
+#####for pypy:
 ```sh
 $ cd youredownloadfolder\python-fitparse
 $ C:\yourepypyprogrammfolder\pypy.exe setup.py install
 ```
-for qpython:  
+#####for qpython:  
 from the unzipped folder copy the whole folder to:
 ```
 /internal_sdcard/qpython/lib/python2.7/site-packages
