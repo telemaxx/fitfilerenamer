@@ -58,11 +58,10 @@ else:
 def main():
     global verbosity, simulation
     starttime = time.time()
-
-#    parser = optparse.OptionParser(usage="usage: %prog filename1.fit filename2.fit or %prog dirname or %prog [option]",version='%prog  {version}'.format(version=__version__))
+#nargs="*",'--fit_files_or_folder','-f','--fit_files_or_folder', dest = 'fit_files_or_folder'
     parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
     parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=1, help='0= silent, 1= a bit output, 2= many output')
-    parser.add_argument('fit_files_or_folder', nargs="*", help='a.fit b.fit etc or ONE folder')
+    parser.add_argument('fit_files_or_folder',nargs="*",  help='w/o default Dir is used')
     parser.add_argument('-s', '--simulation', action = 'store_true', help='simulation without renaming any file')
     parser.add_argument('-i', '--ignorecrc', action = 'store_false', help='no crc check')
     arguments = vars(parser.parse_args())
@@ -77,7 +76,6 @@ def main():
         droid = sl4a.Android()
     else:
         Dprint('Android not detectet')
-
 
     if len(args) == 1:
         Dprint(u"Looking for File or Directory: %s" % args[0])
