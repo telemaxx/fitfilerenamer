@@ -9,7 +9,7 @@ this syntax:
 `YYYY-MM-DD_hh-mm-ss_device_altitudegain_count.fit`
 
 ### HOWTO INSTALL
-  * 1st install python 2.7 or python 3 or pypy
+  * 1st install python 2.7 or python 3 or pypy or 'qpython on android'
   * Install fitparse modul
     [Available here](http://dtcooper.github.com/python-fitparse/)
 description some where below
