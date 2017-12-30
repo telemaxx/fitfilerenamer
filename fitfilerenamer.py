@@ -1,3 +1,6 @@
+#qpy:console
+#qpy:2
+
 """ fitfileRenamer.py
 With this Script you can rename fit Files created with Lezyne e.g:
 a876cde4.fit becomes 2017-12-31_15-59-59.fit
@@ -25,7 +28,6 @@ __author__ = 'telemaxx'
 
 import os
 import sys
-#import optparse
 import argparse
 import datetime
 import time
@@ -39,21 +41,19 @@ try: #check if android and import gui tools
 except: #otherwise its not android
     ROA = None
 
-# DEBUG 0=silent, 1=some infos, 2=many output
-
-# Directory where the FIT Files are located
-if not ROA: # not android
-    # HOME stands for youre homedirectory e.g /home/pi 
-    HOME = os.path.expanduser('~')
-    FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
-    #FIT_DEFAULT_PATH = 'C:\\Users\\top\\BTSync\\SA5\\Documents\\LezyneGpsAlly\\6745th\\'
-else: # android.-> os.path.join seems not to work on my samsung, so manuell:
-    #FIT_DEFAULT_PATH = '/sdcard/Documents/LezyneGpsAlly/6745th'
-    FIT_DEFAULT_PATH = os.path.abspath(os.path.join(os.sep,'sdcard','Documents','LezyneGpsAlly','6745th'))
-
 DEFAULT_MANUFACTURER = 'Samsung-A5-2017' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
+
+# Directory where the FIT Files are located
+if ROA: # android
+    FIT_DEFAULT_PATH = os.path.abspath(os.path.join(os.sep,'sdcard','Documents','LezyneGpsAlly','6745th'))
+else:
+    # HOME stands for youre homedirectory e.g /home/pi 
+    HOME = os.path.expanduser('~')
+    FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
+
+    
 
 def main():
     global verbosity, simulation
