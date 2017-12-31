@@ -16,7 +16,7 @@ description some where below
   * download fitfilerenamer.py and save it some where
   * create a shortcut on the Desktop. Target:
   `C:\yourepythonprogrammfolder\python.exe C:\thefolderwhereyousavethefile\fitfilerenamer.py`
-## HOWTO USE
+### HOWTO USE
 ##### There are three different ways to use this tool:
 1. doubleclick the shortcut, the script looking for fit files in the defaultdirectory, defined inside the python file
 ```python
@@ -36,7 +36,7 @@ Note: This tool using the fitparse modul, powerfull but slow. So please be patie
 * ignoring wrong crc `C:\thefolderwhereyousavethefile\fitfilerenamer.py -i`
 * simulation mode, do all except renaming `C:\thefolderwhereyousavethefile\fitfilerenamer.py -s`
 
-## HOWTO install fitparse
+### HOWTO install fitparse
 the description on the project webpage did not worked for me so i do it this way:
 * go to the [project github page](https://github.com/dtcooper/python-fitparse)
 * click on "clone or download" and select "download zip"
@@ -62,7 +62,7 @@ The \"normal\" easyier way would be:
 $ C:\yourepythonprogrammfolder\pip install python-fitparse
 ```
 you should try that first
-## TIP
+### TIP
 instead of using the standard python, use [pypy](https://pypy.org)   
 With pypy the script runs about 5 times faster.   
 startup time is longer, but after that is faster.   
