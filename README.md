@@ -68,3 +68,22 @@ With pypy the script runs about 5 times faster.
 startup time is longer, but after that is faster.   
 On Windows, there is only the python2 compliant 32bit version. but that version is ok. 
 
+### Benchmarks
+Using the files in
+```sh
+youredownloadfolder\python-fitparse\tests\files\
+```
+starting with:
+```sh
+$ C:\yourepypyprogrammfolder\pypy.exe C:\thefolderwhereyousavethefile\fitfilerenamer.py -s youredownloadfolder\python-fitparse\tests\files\
+```
+
+| System | Python | executiontime |
+| ------ | ------ | ------ |
+| RASPBIAN PI3 | pypy(2) | 56sec |
+| RASPBIAN PI3 | python(2) | 201sec |
+| RASPBIAN PI3 | python(3) | 197sec |
+| Win10 Pentium N3710 | pypy(2) | 26 |
+| Win10 Pentium N3710 | python(3) | 129 |
+| Win7  Intel I7 | python(3) | 29 |
+
