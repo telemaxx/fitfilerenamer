@@ -86,4 +86,5 @@ $ C:\yourepypyprogrammfolder\pypy.exe C:\thefolderwhereyousavethefile\fitfileren
 | Win10 Pentium N3710 | pypy(2) | 26sec |
 | Win10 Pentium N3710 | python(3) | 129sec |
 | Win7  Intel I7 | python(3) | 29sec |
+| Android Samsung A5 2017 | qpython(2) | 224sec |
 
