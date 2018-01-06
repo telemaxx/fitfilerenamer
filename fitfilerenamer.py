@@ -21,9 +21,10 @@ release infos:
 0.63: mods to make the code comptible to python 2.7 AND 3
 0.64: removing hard coded windows default path and using hopefully os independent path
 0.70: switching from optparse to argparse. adding some options: -s (simulationmode -i (ignore wrong crc) -v (verbosity 0-2)
+0.71: better Android Qpython detection
 """
 
-__version__ = '0.70'
+__version__ = '0.71'
 __author__ = 'telemaxx'
 
 import os
@@ -34,12 +35,20 @@ import time
 import glob
 from fitparse import FitFile, FitParseError
 
-#try to detect android
+#try to detect QPython on android
 ROA = True
 try: #check if android and import gui tools
-    import androidhelper.sl4a as sl4a
-except: #otherwise its not android
-    ROA = None
+	import androidhelper.sl4a as sl4a # try new locaation
+except: #otherwise its not android or old location
+	#print('not qpython 3.6 or QPython 2')
+	ROA = None
+if not ROA:
+	ROA = True
+	try:
+		import sl4a # try old location
+	except:
+		#print('not qpython 3.2')
+		ROA = None
 
 DEFAULT_MANUFACTURER = 'Samsung-A5-2017' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
@@ -60,7 +69,7 @@ def main():
     starttime = time.time()
 #nargs="*",'--fit_files_or_folder','-f','--fit_files_or_folder', dest = 'fit_files_or_folder'
     parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
-    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=1, help='0= silent, 1= a bit output, 2= many output')
+    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=2, help='0= silent, 1= a bit output, 2= many output')
     parser.add_argument('fit_files_or_folder',nargs="*",  help='w/o default Dir is used')
     parser.add_argument('-s', '--simulation', action = 'store_true', help='simulation without renaming any file')
     parser.add_argument('-i', '--ignorecrc', action = 'store_false', help='no crc check')
@@ -70,7 +79,7 @@ def main():
     ignorecrc = arguments['ignorecrc']
     simulation = arguments['simulation']
     #    (optionen, args) = parser.parse_args()
-
+    #Iprint('Argumentlength %s' % (len(args)))
     if ROA:
         Dprint('Android (qpython) detectet')
         droid = sl4a.Android()
@@ -78,7 +87,7 @@ def main():
         Dprint('Android not detectet')
 
     if len(args) == 1:
-        Dprint(u"Looking for File or Directory: %s" % args[0])
+        Dprint("Looking for File or Directory: %s" % args[0])
         if args[0][-4:].lower()=='.fit' and os.path.isfile(args[0]): # if the one argument is a file, create a list with one entry
             filelist = [args[0]]
         elif os.path.isdir(args[0]): #if the one argument is a dir, create a list with the fit files
@@ -90,7 +99,7 @@ def main():
             sys.exit(1)
 
     elif  len(args) == 0: # no argument given
-        Dprint(u"No argument, looking at default Path: %s" % (FIT_DEFAULT_PATH))
+        Dprint('No argument, looking at default Path: %s' % (FIT_DEFAULT_PATH))
         if os.path.isdir(FIT_DEFAULT_PATH):
             Dprint('No argument, but default path exist: %s' % (FIT_DEFAULT_PATH))
             filelist = create_filelist(FIT_DEFAULT_PATH)
@@ -198,7 +207,7 @@ def get_manufacturer(messages):
                 if f.value == 'garmin':# orux set falseflag garmin
                     Dprint ('manufacturer was garmin, using \"%s\"' % DEFAULT_MANUFACTURER)
                     return DEFAULT_MANUFACTURER
-                Dprint("manufacturer %s" % (f.value))
+                Dprint('manufacturer %s' % (f.value))
                 return f.value
     return DEFAULT_MANUFACTURER
 
@@ -240,7 +249,7 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
     manufacturer = get_manufacturer(messages)
     Dprint('search enhanced altitude')
     climb = get_enhanced_altitude(messages)
-    Dprint("enhanced_altitude %s" % (climb))
+    Dprint('enhanced_altitude %s' % (climb))
     Dprint('analyzing done')
     if timestamp is not None:
         output_file = timestamp.strftime('%Y-%m-%d_%H-%M-%S') + '_' + manufacturer + '_' + climb + 'hm_' + str(counter) + '.fit'        
@@ -249,12 +258,12 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
         date_string=time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(modified_time))
         output_file = date_string + '_modi_' + str(counter) + '.fit'
         Dprint('no Timestamp, using modification time: %s' % (date_string))
-    Dprint("timestamp %s" % (timestamp))
+    Dprint('timestamp %s' % (timestamp))
     fitpath4renaming = os.path.split(original_filename)[0]
     Iprint ('creating %s in path: %s' % (output_file,fitpath4renaming))
     if not os.path.isfile(os.path.join(fitpath4renaming , output_file)):
         #if os.path.isfile(original_filename):
-        Dprint("renaming orig, FITPATH+'\\'+outputfile %s %s" % (original_filename,os.path.join(fitpath4renaming,output_file)))
+        Dprint('renaming from %s to %s' % (original_filename,os.path.join(fitpath4renaming,output_file)))
         if not simulation:
             os.rename(original_filename, os.path.join(fitpath4renaming,output_file))
         else:
