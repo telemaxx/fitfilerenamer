@@ -22,9 +22,10 @@ release infos:
 0.64: removing hard coded windows default path and using hopefully os independent path
 0.70: switching from optparse to argparse. adding some options: -s (simulationmode -i (ignore wrong crc) -v (verbosity 0-2)
 0.71: better Android Qpython detection
+0.72: more detailed summary
 """
 
-__version__ = '0.71'
+__version__ = '0.72'
 __author__ = 'telemaxx'
 
 import os
@@ -69,7 +70,7 @@ def main():
     starttime = time.time()
 #nargs="*",'--fit_files_or_folder','-f','--fit_files_or_folder', dest = 'fit_files_or_folder'
     parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
-    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=2, help='0= silent, 1= a bit output, 2= many output')
+    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,2), default=1, help='0= silent, 1= a bit output, 2= many output')
     parser.add_argument('fit_files_or_folder',nargs="*",  help='w/o default Dir is used')
     parser.add_argument('-s', '--simulation', action = 'store_true', help='simulation without renaming any file')
     parser.add_argument('-i', '--ignorecrc', action = 'store_false', help='no crc check')
@@ -131,7 +132,7 @@ def main():
         Dprint('creating progressbar')
 
     Iprint('please be patient, i am parsing. This can take a minute')
-    file_count = 0
+    file_count = skipped_count = renamed_count = simulated_count = skipped_defective_count = 0
     for file in filelist:
         Dprint('processing %s' % (file))
         Dprint('start datafitprocessor')
@@ -145,22 +146,31 @@ def main():
             Dprint('parsing done')
         except FitParseError as e:
             Iprint('skipping defective fitfile %s' % (file))
+            skipped_defective_count +=1
             for m in e.args:
                 Dprint('Exception: %s' % (m))
             continue
         #Dprint('rename arguments: %s , %s , %d' % (fitfile, file, file_count))
-        rename_fitfile(fitfile, file, file_count)
+        renamestatus = rename_fitfile(fitfile, file, file_count)
+        if   renamestatus == 'renamed':
+            renamed_count += 1
+        elif renamestatus == 'simulated_renaming':
+            simulated_count +=1
+        elif renamestatus == 'skipped':
+            skipped_count +=1
         if ROA:
             droid.dialogSetCurrentProgress(file_count + 1)
         file_count += 1
     difftime = time.time() - starttime
     Iprint('finished processing %d file(s) in %d seconds' % (file_count, difftime))
+    summary = 'renamed: %d, simulated: %d, skipped existing: %d, skipped defective: %d' % (renamed_count, simulated_count, skipped_count, skipped_defective_count)
+    Iprint(summary)
     if ROA:
         droid.dialogDismiss()
-        title='I have renamed %d File(s) in %d seconds' % (file_count, difftime)
+        title='I have processed %d File(s) in %d seconds' % (file_count, difftime)
         #droid.makeToast(title)
         #droid.ttsSpeak(title)
-        summary = 'Default Filelocation: %s' % (FIT_DEFAULT_PATH)
+        #summary = 'renamed: %d, simulated: %d, skipped existing: %d, skipped defective: %d' % (renamed_count, simulated_count, skipped_count, skipped_defective_count)
         droid.dialogCreateAlert(title, summary)
         droid.dialogSetPositiveButtonText('OK')
         droid.dialogShow()
@@ -266,11 +276,15 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
         Dprint('renaming from %s to %s' % (original_filename,os.path.join(fitpath4renaming,output_file)))
         if not simulation:
             os.rename(original_filename, os.path.join(fitpath4renaming,output_file))
+            returncode = 'renamed'
         else:
             Iprint('in simulation mode, skipping renaming')
+            returncode = 'simulated_renaming'
     else:
         Iprint("skipping existing File: %s" % (output_file))
+        returncode = 'skipped'
     Dprint ('-------------------')
+    return(returncode)
 
 if __name__=='__main__':
     main()
