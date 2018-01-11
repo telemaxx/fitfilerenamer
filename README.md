@@ -66,7 +66,7 @@ you should try that first
 instead of using the standard python, use [pypy](https://pypy.org)   
 With pypy the script runs about 5 times faster.   
 startup time is longer, but after that is faster.   
-On Windows, there is only the python2 compliant 32bit version. but that version is ok. 
+On Windows, there is only the python2 compliant 32bit version. but that version is ok.   
 
 ### Benchmarks
 Using the files in
