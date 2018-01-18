@@ -34,8 +34,15 @@ import argparse
 import datetime
 import time
 import glob
+import logging
 from fitparse import FitFile, FitParseError
 
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+logging.info('Information')
+logging.warning('Warnung')
+logging.debug('debug')
+logging.error('error message')
+logging.critical('critical message')
 
 #try to detect QPython on android
 ROA = True
