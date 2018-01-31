@@ -23,9 +23,10 @@ release infos:
 0.70: switching from optparse to argparse. adding some options: -s (simulationmode -i (ignore wrong crc) -v (verbosity 0-2)
 0.71: better Android Qpython detection
 0.72: more detailed summary
+0.73: tabs to spaces
 """
 
-__version__ = '0.72'
+__version__ = '0.73'
 __author__ = 'telemaxx'
 
 import os
@@ -40,17 +41,17 @@ from fitparse import FitFile, FitParseError
 #try to detect QPython on android
 ROA = True
 try: #check if android and import gui tools
-	import androidhelper.sl4a as sl4a # try new locaation
+    import androidhelper.sl4a as sl4a # try new location
 except: #otherwise its not android or old location
-	#print('not qpython 3.6 or QPython 2')
-	ROA = None
+    #print('not qpython 3.6 or QPython 2')
+    ROA = None
 if not ROA:
-	ROA = True
-	try:
-		import sl4a # try old location
-	except:
-		#print('not qpython 3.2')
-		ROA = None
+    ROA = True
+    try:
+        import sl4a # try old location
+    except:
+        #print('not qpython 3.2')
+        ROA = None
 
 DEFAULT_MANUFACTURER = 'Samsung-A5-2017' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
