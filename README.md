@@ -37,11 +37,22 @@ Note: This tool using the fitparse modul, powerfull but slow. So please be patie
 * simulation mode, do all except renaming `C:\thefolderwhereyousavethefile\fitfilerenamer.py -s`
 
 ### HOWTO install fitparse
-the description on the project webpage did not worked for me so i do it this way:
-* go to the [project github page](https://github.com/dtcooper/python-fitparse)
-* click on "clone or download" and select "download zip"
-* unzip this file into a new folder
-* open a command prompt and change in that folder and execude the `setup.py`:
+the normal way is now working (the old way below)
+##### with python2
+```sh
+$ C:\yourepythonprogrammfolder\scripts\pip.exe install fitparse
+```
+##### with python3:
+```sh
+$ C:\yourepythonprogrammfolder\scripts\pip3.exe install fitparse
+```
+
+
+* ~~the description on the project webpage did not worked for me so i do it this way:~~
+* ~~go to the [project github page](https://github.com/dtcooper/python-fitparse)~~
+* ~~click on "clone or download" and select "download zip"~~
+* ~~unzip this file into a new folder~~
+* ~~open a command prompt and change in that folder and execude the `setup.py`:~~
 ```sh
 $ cd youredownloadfolder\python-fitparse
 $ C:\yourepythonprogrammfolder\python.exe setup.py install
@@ -51,17 +62,18 @@ $ C:\yourepythonprogrammfolder\python.exe setup.py install
 $ cd youredownloadfolder\python-fitparse
 $ C:\yourepypyprogrammfolder\pypy.exe setup.py install
 ```
-#### for qpython:  
-from the unzipped folder copy the whole folder to:
+#### for qpython:
+##### New:
+use the integrated QPYPI -> TOOLS -> INSTALL WITH PYTHONS PYPI and enter:
+pip3 install fitparse
+or
+pip install fitparse
+(depending which python version you use.
+~~from the unzipped folder copy the whole folder to:~~
 ```
 /internal_sdcard/qpython/lib/python2.7/site-packages
 ```
 
-The \"normal\" easyier way would be:
-```sh
-$ C:\yourepythonprogrammfolder\pip install python-fitparse
-```
-you should try that first
 ### TIP
 instead of using the standard python, use [pypy](https://pypy.org)   
 With pypy the script runs about 5 times faster.   
