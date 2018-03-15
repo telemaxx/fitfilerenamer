@@ -71,9 +71,8 @@ pip install fitparse
 (depending which python version you use.
 
 ~~from the unzipped folder copy the whole folder to:~~
-```
-/internal_sdcard/qpython/lib/python2.7/site-packages
-```
+~~/internal_sdcard/qpython/lib/python2.7/site-packages~~
+
 
 ### TIP
 instead of using the standard python, use [pypy](https://pypy.org)   
