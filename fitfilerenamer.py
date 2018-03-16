@@ -24,9 +24,10 @@ release infos:
 0.71: better Android Qpython detection
 0.72: more detailed summary
 0.73: tabs to spaces
+0.74: enable verbosity level 2 -v2
 """
 
-__version__ = '0.73'
+__version__ = '0.74'
 __author__ = 'telemaxx'
 
 import os
