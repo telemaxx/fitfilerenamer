@@ -90,13 +90,13 @@ starting with:
 $ C:\yourepypyprogrammfolder\pypy.exe C:\thefolderwhereyousavethefile\fitfilerenamer.py -s youredownloadfolder\python-fitparse\tests\files\
 ```
 
-| System | Python | executiontime |
-| ------ | ------ | ------ |
-| RASPBIAN PI3 | pypy(2) | 56sec |
-| RASPBIAN PI3 | python(2) | 201sec |
-| RASPBIAN PI3 | python(3) | 197sec |
-| Win10 Pentium N3710 | pypy(2) | 26sec |
-| Win10 Pentium N3710 | python(3) | 129sec |
-| Win7  Intel I7 | python(3) | 29sec |
-| Android Samsung A5 2017 | qpython(2) | 224sec |
+| System | Python | executiontime | new version |
+| ------ | ------ | ------ | ------ |
+| RASPBIAN PI3 | pypy(2) | 56sec | |
+| RASPBIAN PI3 | python(2) | 201sec | |
+| RASPBIAN PI3 | python(3) | 197sec | |
+| Win10 Pentium N3710 | pypy(2) | 26sec | 20sec |
+| Win10 Pentium N3710 | python(3) | 129sec | 90sec |
+| Win7  Intel I7 | python(3) | 29sec | |
+| Android Samsung A5 2017 | qpython(2) | 224sec | |
 
