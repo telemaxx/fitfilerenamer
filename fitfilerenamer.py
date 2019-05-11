@@ -25,9 +25,10 @@ release infos:
 0.72: more detailed summary
 0.73: tabs to spaces
 0.74: enable verbosity level 2 -v2
+0.75: using one loop for all instead of 4
 """
 
-__version__ = '0.74'
+__version__ = '0.75'
 __author__ = 'telemaxx'
 
 import os
