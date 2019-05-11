@@ -13,7 +13,7 @@ return codes:
 release infos:
 0.2: error handling to parse all demo fitfles
 0.3: argument parser
-0.4: searching 'time_created' instead of 'timestamp'
+0.4: searching 'time_created' instead of 'timstamp'
 0.5: enhanced altidude is now correctly searched
 0.6: working with absolut filenames in the list. to allow Drag n Drop multiple files
 0.61: if parsing defective file and Verbosity is 2 some info is shown.
@@ -189,41 +189,53 @@ def Iprint(text2print):
     if verbosity != 0:
         print(text2print)
 
-
-def get_alldata(messages):
-    my_enh_alt_max = 0.0
-    my_manufacturer = DEFAULT_MANUFACTURER
-    my_eventtype = DEFAULT_EVENT_TYPE
-    my_timestamp = None
+def get_timestamp(messages):
     for m in messages:
+        #Dprint('messages %s' % (m))
         fields = m.fields
         for f in fields:
-            # the old "get_enhanced_altitude(messages)"
-            if f.name == 'total_ascent' and f.value != None:
-                if f.value > my_enh_alt_max:
-                    my_enh_alt_max = f.value  
-    
-            #the old "get_manufacturer(messages)"
-            if f.name == 'manufacturer':
-                if f.value == None or isinstance(f.value,int):
-                    Dprint('manufacteur was None')
-                    my_manufacturer = DEFAULT_MANUFACTURER
-                else:
-                    my_manufacturer = f.value
-            
-            #the old "get_event_type(messages)"
-            if f.name == 'sport':
-                event_type = f.value
-             
-            # the old "get_timestamp(messages)"
+            #Dprint('field %s' % (f))
+            #if f.name == 'timestamp':
             if f.name == 'time_created':
                 if isinstance(f.value,int):
                     Dprint('timestamp is integer: %d' % (f.value))
-                    my_timestamp = None
+                    return None
                 else:
-                    my_timestamp = f.value
-    return  my_timestamp , str(int(float(my_enh_alt_max))) , my_manufacturer , my_eventtype
-    
+                    return f.value
+    return None
+
+def get_event_type(messages):
+    for m in messages:
+        fields = m.fields
+        for f in fields:
+            if f.name == 'sport':
+                return f.value
+    return DEFAULT_EVENT_TYPE
+
+def get_manufacturer(messages):
+    for m in messages:
+        fields = m.fields
+        for f in fields:
+            if f.name == 'manufacturer':
+                if f.value == 'garmin':# orux set falseflag garmin
+                    Dprint ('manufacturer was garmin, using \"%s\"' % DEFAULT_MANUFACTURER)
+                    return DEFAULT_MANUFACTURER
+                Dprint('manufacturer %s' % (f.value))
+                return f.value
+    return DEFAULT_MANUFACTURER
+
+def get_enhanced_altitude(messages):
+    enh_alt_max=0.0
+    for m in messages:
+        fields = m.fields
+        for f in fields:
+            if f.name == 'total_ascent' and f.value != None:
+                if f.value > enh_alt_max:
+                    enh_alt_max = f.value
+                #print('alt: ',str(int(float(enh_alt_max))))
+    return str(int(float(enh_alt_max)))
+
+
 def create_filelist(dir):
     fit_files = glob.glob(os.path.join(dir,'*.[fF][iI][tT]'))
     return(fit_files)
@@ -241,14 +253,15 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
     global simulation
     Dprint('fitfile.messages')
     messages = fitfile.messages
-    
-    timestamp , climb , manufacturer , event_type = get_alldata(messages)
-    
-    Dprint('timestamp: %s' % timestamp)
-    Dprint('manufacturer: %s' % manufacturer)
-    Dprint('event_type: %s' % event_type)
-    Dprint('climb: %s' % climb)
-
+    Dprint('search timestamp')
+    timestamp = get_timestamp(messages)
+    #Dprint('timestamp %s' % (timestamp))
+    Dprint('search eventtime')
+    event_type = get_event_type(messages)
+    Dprint('search manufateur')
+    manufacturer = get_manufacturer(messages)
+    Dprint('search enhanced altitude')
+    climb = get_enhanced_altitude(messages)
     Dprint('enhanced_altitude %s' % (climb))
     Dprint('analyzing done')
     if timestamp is not None:
