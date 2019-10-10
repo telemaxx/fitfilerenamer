@@ -55,7 +55,7 @@ if not ROA:
         #print('not qpython 3.2')
         ROA = None
 
-DEFAULT_MANUFACTURER = 'Samsung-A5-2017' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
+DEFAULT_MANUFACTURER = 'Garmin-corrected' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
 
@@ -74,7 +74,7 @@ def main():
     starttime = time.time()
 #nargs="*",'--fit_files_or_folder','-f','--fit_files_or_folder', dest = 'fit_files_or_folder'
     parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
-    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=0, help='0= silent, 1= a bit output, 2= many output')
+    parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=1, help='0= silent, 1= a bit output, 2= many output')
     parser.add_argument('fit_files_or_folder',nargs="*",  help='w/o default Dir is used')
     parser.add_argument('-s', '--simulation', action = 'store_true', help='simulation without renaming any file')
     parser.add_argument('-i', '--ignorecrc', action = 'store_false', help='no crc check')
@@ -207,7 +207,7 @@ def get_alldata(messages):
             #the old "get_manufacturer(messages)"
             if f.name == 'manufacturer':
                 if f.value == None or isinstance(f.value,int):
-                    Dprint('manufacteur was None')
+                    Iprint('manufacteur was None')
                     my_manufacturer = DEFAULT_MANUFACTURER
                 else:
                     my_manufacturer = f.value
