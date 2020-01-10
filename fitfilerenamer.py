@@ -39,7 +39,7 @@ import datetime
 import time
 import glob
 from fitparse import FitFile, FitParseError
-
+import shutil
 
 #try to detect QPython on android
 ROA = True
@@ -56,7 +56,7 @@ if not ROA:
         #print('not qpython 3.2')
         ROA = None
 
-DEFAULT_MANUFACTURER = 'Edge-corrected' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
+DEFAULT_MANUFACTURER = 'other' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
 
@@ -71,19 +71,22 @@ else:
     
 
 def main():
-    global verbosity, simulation
+    global verbosity, simulation, overwrite
     starttime = time.time()
 #nargs="*",'--fit_files_or_folder','-f','--fit_files_or_folder', dest = 'fit_files_or_folder'
     parser = argparse.ArgumentParser(description='The fitfilerenamer tool',epilog = '%(prog)s {version}'.format(version=__version__))
     parser.add_argument('-v', '--verbosity', type = int, choices = range(0,3), default=1, help='0= silent, 1= a bit output, 2= many output')
     parser.add_argument('fit_files_or_folder',nargs="*",  help='w/o default Dir is used')
     parser.add_argument('-s', '--simulation', action = 'store_true', help='simulation without renaming any file')
+    parser.add_argument('-o', '--overwrite', action = 'store_true', help='overwrite existing file')
     parser.add_argument('-i', '--ignorecrc', action = 'store_false', help='no crc check')
     arguments = vars(parser.parse_args())
     args = arguments['fit_files_or_folder']
     verbosity = arguments['verbosity']
     ignorecrc = arguments['ignorecrc']
     simulation = arguments['simulation']
+    overwrite = arguments['overwrite']
+    
     #    (optionen, args) = parser.parse_args()
     #Iprint('Argumentlength %s' % (len(args)))
     if ROA:
@@ -208,9 +211,12 @@ def get_alldata(messages):
             #the old "get_manufacturer(messages)"
             if f.name == 'garmin_product' and m.name == 'file_id':
                 Iprint ("device: %s" % (f.value))
-                if f.value == None or isinstance(f.value,int):
+                if f.value == None:# or isinstance(f.value,int):
                     Iprint('manufacteur was None')
                     my_manufacturer = DEFAULT_MANUFACTURER
+                elif isinstance(f.value,int): # edge has number as name
+                    Iprint('garmin_product was number')
+                    my_manufacturer = "edge530"
                 else:
                     my_manufacturer = f.value
             
@@ -255,16 +261,19 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
     Dprint('enhanced_altitude %s' % (climb))
     Dprint('analyzing done')
     if timestamp is not None:
-        output_file = timestamp.strftime('%Y-%m-%d_%H-%M-%S') + '_' + manufacturer + '_' + climb + 'hm_' + str(counter) + '.fit'        
+        #output_file = timestamp.strftime('%Y-%m-%d_%H-%M-%S') + '_' + manufacturer + '_' + climb + 'hm_' + str(counter) + '.fit'
+        output_file = timestamp.strftime('%Y-%m-%d_%H-%M-%S') + '_' + manufacturer + '_' + climb + 'hm' + '.fit'
     else:
         modified_time = os.stat(original_filename).st_mtime
         date_string=time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(modified_time))
-        output_file = date_string + '_modi_' + str(counter) + '.fit'
+        #output_file = date_string + '_modi_' + str(counter) + '.fit'
+        output_file = date_string + '.fit'
         Dprint('no Timestamp, using modification time: %s' % (date_string))
     Dprint('timestamp %s' % (timestamp))
     fitpath4renaming = os.path.split(original_filename)[0]
     Iprint ('creating %s in path: %s' % (output_file,fitpath4renaming))
-    if not os.path.isfile(os.path.join(fitpath4renaming , output_file)):
+    
+    if not os.path.isfile(os.path.join(fitpath4renaming , output_file)): #file not exists
         #if os.path.isfile(original_filename):
         Dprint('renaming from %s to %s' % (original_filename,os.path.join(fitpath4renaming,output_file)))
         if not simulation:
@@ -273,7 +282,12 @@ def rename_fitfile(fitfile, original_filename=None, counter=0):
         else:
             Iprint('in simulation mode, skipping renaming')
             returncode = 'simulated_renaming'
-    else:
+    elif not simulation and overwrite and original_filename != os.path.join(fitpath4renaming,output_file): # file exists, overwrite when source!= dest
+        shutil.move(original_filename, os.path.join(fitpath4renaming,output_file))
+        Iprint("overwrite existing File: %s" % (output_file))
+        #os.rename(original_filename, os.path.join(fitpath4renaming,output_file))
+        returncode = 'renamed'
+    else: # file exists, skip
         Iprint("skipping existing File: %s" % (output_file))
         returncode = 'skipped'
     Dprint ('-------------------')
