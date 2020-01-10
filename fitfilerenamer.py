@@ -26,9 +26,10 @@ release infos:
 0.73: tabs to spaces
 0.74: enable verbosity level 2 -v2
 0.75: using one loop for all instead of 4
+0.76: check if edge or fenix
 """
 
-__version__ = '0.75'
+__version__ = '0.76'
 __author__ = 'telemaxx'
 
 import os
@@ -55,7 +56,7 @@ if not ROA:
         #print('not qpython 3.2')
         ROA = None
 
-DEFAULT_MANUFACTURER = 'Garmin-corrected' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
+DEFAULT_MANUFACTURER = 'Edge-corrected' # used, when no manufacturer given or manufacturer is set garmin by oruxmaps
 DEFAULT_EVENT_TYPE = 'Cycling'
 WAIT_AFTER_JOB_DONE = 10
 
@@ -203,9 +204,10 @@ def get_alldata(messages):
             if f.name == 'total_ascent' and f.value != None:
                 if f.value > my_enh_alt_max:
                     my_enh_alt_max = f.value  
-    
+
             #the old "get_manufacturer(messages)"
-            if f.name == 'manufacturer':
+            if f.name == 'garmin_product' and m.name == 'file_id':
+                Iprint ("device: %s" % (f.value))
                 if f.value == None or isinstance(f.value,int):
                     Iprint('manufacteur was None')
                     my_manufacturer = DEFAULT_MANUFACTURER
