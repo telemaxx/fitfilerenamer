@@ -66,7 +66,7 @@ if ROA: # android
 else:
     # HOME stands for youre homedirectory e.g /home/pi 
     HOME = os.path.expanduser('~')
-    FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','LezyneGpsAlly','6745th')
+    FIT_DEFAULT_PATH = os.path.join(HOME,'BTSync','SA5','Documents','Garmin_fit')
 
     
 
